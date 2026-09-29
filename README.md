@@ -110,7 +110,6 @@ The analysis can help:
 - Present price variation using visualizations.
 - Demonstrate the practical use of Python and Pandas in a real-world dataset.
 
-> **Academic Scope:** This project is intended for academic data-analysis purposes. It does not provide medical advice, pharmaceutical certification, or official regulatory classification.
 
 ---
 
@@ -125,6 +124,8 @@ The analysis can help:
 The dataset was acquired from **Kaggle** and contains information about pharmaceutical products available in the Indian pharmaceutical market.
 
 **Source:** Indian Pharmaceutical Products Dataset – Kaggle
+https://www.kaggle.com/datasets/rishgeeky/indian-pharmaceutical-products
+
 
 ## Dataset Description
 
@@ -363,8 +364,6 @@ The visual outputs generated during the project are maintained separately in the
 
 ![Comparison Group Analysis](Images/comparison_group_analysis.png)
 
-> **Note:** The image filenames in the `Images` folder must exactly match the filenames used in this README.
-
 ---
 
 #  Important Dataset Attributes
@@ -513,10 +512,308 @@ These validation checks helped ensure that the data used for analysis was consis
 
 ---
 
-#  Missing-Value Handling
+#  Duplicate Validation
 
-Missing values were identified using Pandas operations such as:
+Duplicate validation was performed to ensure that the same product was not unintentionally represented multiple times.
 
-```python
-isnull()
-sum()
+The `product_id` field was used as the main identifier for checking duplicate products.
+
+## Duplicate Checks
+
+The following checks were performed:
+
+- Identification of duplicate Product IDs
+- Counting duplicate records
+- Validating Product ID uniqueness after cleaning
+
+The final comparison-ready dataset contained:
+
+**0 duplicate Product IDs**
+
+This helped ensure that products were represented correctly during the analysis.
+
+---
+
+#  Data Cleaning and Filtering
+
+Data cleaning was performed before creating comparison groups.
+
+The main cleaning and filtering operations included:
+
+1. Removing records with invalid or zero prices.
+2. Standardizing medicine names.
+3. Standardizing manufacturer names.
+4. Standardizing primary ingredient values.
+5. Standardizing strength values.
+6. Standardizing dosage-form values.
+7. Checking duplicate Product IDs.
+8. Handling unsuitable records.
+9. Validating important fields required for comparison.
+
+The purpose of data cleaning was to make similar medicine records consistent so that they could be compared correctly.
+
+---
+
+#  Data Transformation
+
+Data transformation was performed to convert raw values into standardized forms suitable for analysis.
+
+The following standardized fields were created:
+
+- `medicine_name_key`
+- `manufacturer_key`
+- `ingredient_key`
+- `strength_key`
+- `dosage_form_key`
+
+These standardized fields helped reduce inconsistencies caused by:
+
+- Different capitalization
+- Extra spaces
+- Text formatting
+- Different representations of similar information
+
+The transformed values were then used for comparison-group creation and further analysis.
+
+---
+
+#  Feature Engineering
+
+Feature engineering was used to create additional analytical attributes from the existing dataset.
+
+The project created derived features to support medicine comparison.
+
+## Important Engineered Features
+
+- Cleaned medicine-name representation
+- Cleaned ingredient representation
+- Cleaned strength representation
+- Cleaned dosage-form representation
+- `comparison_group`
+- `medicine_type`
+- Price difference
+- Percentage price difference
+
+These features were created during the project to support classification, grouping, and price analysis.
+
+---
+
+#  Comparison Group Creation
+
+A comparison group was created to identify medicines with comparable characteristics.
+
+The project defines a comparison group using:
+
+**Primary Ingredient + Primary Strength + Dosage Form**
+
+The standardized values were combined to create the `comparison_group`.
+
+#  Pandas Operations
+
+Pandas was extensively used for data loading, cleaning, transformation, grouping, and analysis.
+
+## Main Pandas Operations Used
+
+| Operation | Purpose |
+|---|---|
+| `pd.read_csv()` | Load the dataset |
+| `df.head()` | View the first records |
+| `df.info()` | Inspect data types and structure |
+| `df.shape` | Check number of rows and columns |
+| `df.columns` | View column names |
+| `df.isnull().sum()` | Check missing values |
+| `df.duplicated()` | Check duplicate records |
+| `value_counts()` | Count categorical values |
+| `sort_values()` | Sort records |
+| `groupby()` | Group records for aggregation |
+| Boolean filtering | Filter required records |
+| Column assignment | Create derived columns |
+
+These operations form the main data-processing workflow of the project.
+
+---
+
+#  Grouping, Sorting, Aggregation & Filtering
+
+Grouping was used to organize medicines according to their comparison groups.
+
+The project used grouping operations to calculate:
+
+- Product count
+- Minimum price
+- Maximum price
+- Average price
+
+## Sorting
+
+Sorting was used to identify:
+
+- Highest price differences
+- Lowest price differences
+- Highest percentage differences
+- Lowest percentage differences
+
+## Filtering
+
+Filtering was used to separate:
+
+- Potential Generic candidates
+- Potential Branded products
+- Products with lower prices
+- Products with higher prices
+- Products with approximately equal prices
+
+## Aggregation
+
+Aggregation was used to summarize prices within each comparison group.
+
+These operations helped convert the raw pharmaceutical dataset into meaningful analytical results.
+
+---
+
+#  Potential Generic-Name Identification
+
+The dataset does not contain an official generic/branded classification field.
+
+Therefore, the project uses a **project-defined analytical method** to identify **Potential Generic** medicine candidates.
+
+## Identification Method
+
+The medicine name is cleaned by:
+
+- Converting the name to lowercase
+- Removing strength values and units
+- Removing common dosage-form words
+- Removing unnecessary spaces
+
+The cleaned medicine name is then compared with the cleaned `primary_ingredient`.
+
+If the cleaned medicine name matches the primary ingredient, the product is classified as:
+
+**Potential Generic**
+
+Otherwise, it is classified as:
+
+**Potential Branded**
+
+## Classification Principle
+
+The classification is based on the relationship between:
+
+```text
+Medicine Name ↔ Primary Ingredient
+23. Statistical Analysis
+
+Statistical analysis was performed to understand price differences among comparable medicines.
+
+The analysis considered:
+
+Number of Potential Generic candidates
+Number of Potential Branded products
+Number of comparison groups
+Minimum price
+Maximum price
+Average price
+Price difference
+Percentage price difference
+
+The analysis also identified:
+
+Potential Generic candidates priced below the comparison average
+Potential Generic candidates priced above the comparison average
+Cases where prices were approximately equal
+
+This analysis helps identify the extent of price variation among products with comparable characteristics.
+
+ Price Comparison Method
+
+The price comparison was performed after identifying Potential Generic candidates and their corresponding comparison groups.
+
+For each Potential Generic candidate:
+
+Its comparison_group was identified.
+Other products belonging to the same comparison group were identified.
+The candidate itself was excluded from the comparison set.
+The average listed price of the other products was calculated.
+The candidate's listed price was compared with this average.
+Comparison Criteria
+
+The products being compared have the same:
+
+Primary ingredient
+Primary strength
+Dosage form
+
+The project uses the average listed price of other products in the same comparison group as the reference price.
+
+ Price Difference
+
+The price difference is calculated using:
+
+Price Difference = Average Price of Other Products − Potential Generic Price
+Interpretation
+
+If:
+
+Price Difference > 0
+
+the Potential Generic candidate has a lower listed price than the average price of the other products in the same comparison group.
+
+If:
+
+Price Difference < 0
+
+the Potential Generic candidate has a higher listed price than the comparison average.
+
+If the difference is approximately zero, the prices are approximately equal.
+
+Therefore, the project does not automatically treat every price difference as a saving.
+
+ Percentage Price Difference
+
+The percentage price difference is calculated using the average price of other products as the reference.
+
+Formula
+Percentage Price Difference
+=
+((Average Other Price − Candidate Price) / Average Other Price) × 100
+Example
+
+Suppose:
+
+Average price of other products = ₹100
+Potential Generic price = ₹70
+
+Then:
+
+Price Difference = ₹100 − ₹70
+                 = ₹30
+Percentage Price Difference
+= (₹30 / ₹100) × 100
+= 30%
+
+Therefore, the Potential Generic candidate's listed price is 30% lower than the comparison average.
+
+Interpretation
+Percentage	Interpretation
+Positive %	Potential Generic candidate is priced below the comparison average
+Negative %	Potential Generic candidate is priced above the comparison average
+Approximately 0%	Prices are approximately equal
+
+A negative percentage should therefore be interpreted as the candidate being higher priced than the comparison average, rather than as a negative saving.
+
+ Project Visualizations
+
+The visual outputs generated during the project are maintained separately in the Images folder.
+
+Potential Generic vs Potential Branded
+
+Potential Generic Price vs Average Comparison Price
+
+Medicine Price Distribution
+
+Price Distribution Comparison
+
+Percentage Price Difference
+
+Comparison Group Analysis
