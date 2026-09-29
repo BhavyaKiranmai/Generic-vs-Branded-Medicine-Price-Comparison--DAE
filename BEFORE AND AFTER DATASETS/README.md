@@ -694,5 +694,5 @@ The Potential Generic and Potential Branded categories are project-defined analy
 
 This project is intended for **academic and data-analysis purposes** and does not provide medical, pharmaceutical or regulatory certification.
 
-## Initial Dataset Columns
+
 
