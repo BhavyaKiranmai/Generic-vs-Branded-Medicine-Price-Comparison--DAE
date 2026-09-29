@@ -157,26 +157,7 @@ The dataset used at the beginning of the Review-2 pipeline contains:
 - **Records:** 253,973
 - **Columns:** 15
 
-## Initial Dataset Columns
-
-```text
-product_id
-brand_name
-manufacturer
-price_inr
-is_discontinued
-dosage_form
-pack_size
-pack_unit
-num_active_ingredients
-primary_ingredient
-primary_strength
-active_ingredients
-therapeutic_class
-packaging_raw
-manufacturer_raw
-
-## 7. Important Dataset Attributes
+- ## 7. Important Dataset Attributes
 
 The dataset contains information about pharmaceutical products available in the Indian pharmaceutical market.
 
@@ -712,6 +693,6 @@ The current project does not normalize prices according to pack size. Therefore,
 The Potential Generic and Potential Branded categories are project-defined analytical classifications and should not be considered official medical or regulatory classifications.
 
 This project is intended for **academic and data-analysis purposes** and does not provide medical, pharmaceutical or regulatory certification.
-Understanding the structure of the dataset
 
-The inspection helped identify the important attributes required for further processing and analysis.
+## Initial Dataset Columns
+
