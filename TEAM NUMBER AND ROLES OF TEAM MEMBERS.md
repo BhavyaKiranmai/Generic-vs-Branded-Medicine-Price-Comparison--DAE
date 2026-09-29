@@ -154,13 +154,10 @@ The team collectively worked on the following major areas:
 
 ---
 
-#  Overall Team Contribution
 
-Each team member contributed to the successful completion of the project by taking responsibility for specific technical and organizational activities. The individual contributions were combined to develop a complete data analysis pipeline for comparing medicine prices based on comparable characteristics.
 
-The team followed a collaborative approach in which **data preparation, implementation, analysis, validation, visualization, documentation, and presentation** were integrated into the final project.
 
----
+
 
 
 ---
