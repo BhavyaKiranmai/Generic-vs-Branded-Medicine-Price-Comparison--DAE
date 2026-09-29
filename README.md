@@ -40,13 +40,7 @@ Medicines with the same or comparable active ingredients can have different list
 
 However, identifying meaningful price differences requires comparing products that have comparable characteristics rather than comparing unrelated medicines.
 
-### Problem Statement
 
-> To analyze pharmaceutical products and identify potential generic-name medicines, group comparable medicines using primary ingredient, strength, and dosage form, and compare their listed prices with other products in the same comparison group.
-
-The project aims to provide a data-driven view of observed medicine price differences within comparable product groups.
-
----
 
 #   Objectives
 
@@ -336,34 +330,6 @@ The results are interpreted based on the listed prices available in the dataset.
 
 ---
 
-#  Project Visualizations
-
-The visual outputs generated during the project are maintained separately in the `Images` folder.
-
-### Potential Generic vs Potential Branded
-
-![Potential Generic vs Potential Branded](Images/potential_generic_vs_branded.png)
-
-### Potential Generic Price vs Average Comparison Price
-
-![Potential Generic Price vs Average Comparison Price](Images/generic_price_vs_average.png)
-
-### Medicine Price Distribution
-
-![Medicine Price Distribution](Images/medicine_price_distribution.png)
-
-### Price Distribution Comparison
-
-![Price Distribution Comparison](Images/price_distribution_comparison.png)
-
-### Percentage Price Difference
-
-![Percentage Price Difference](Images/percentage_price_difference.png)
-
-### Comparison Group Analysis
-
-![Comparison Group Analysis](Images/comparison_group_analysis.png)
-
 ---
 
 #  Important Dataset Attributes
@@ -430,72 +396,9 @@ The inspection helped identify the important attributes required for further pro
 
 ---
 
-#  Data Acquisition & Filtering
 
-The dataset used for this project is the **Indian Pharmaceutical Products Dataset**.
 
-The dataset was acquired from Kaggle and processed in the project environment.
 
-## Dataset Source
-
-**Indian Pharmaceutical Products Dataset – Kaggle**
-
-## Filtering Performed
-
-The dataset was filtered to retain records useful for medicine price comparison.
-
-The main filtering criteria included:
-
-- Valid medicine product records
-- Valid price information
-- Relevant ingredient information
-- Relevant strength information
-- Relevant dosage-form information
-
-Records with invalid or zero prices were removed because they cannot be used for meaningful price comparison.
-
-After filtering invalid price records, the dataset contained:
-
-**253,969 records**
-
----
-
-#  Data Extraction
-
-Data extraction was performed to select the attributes required for further analysis.
-
-The following important attributes were extracted:
-
-- Product ID
-- Medicine/brand name
-- Manufacturer
-- Price
-- Dosage form
-- Pack size
-- Pack unit
-- Number of active ingredients
-- Primary ingredient
-- Primary strength
-- Active ingredients
-- Therapeutic class
-
-Selecting relevant attributes reduced the complexity of the dataset and made subsequent validation, transformation and analysis easier.
-
----
-
-#  Data Validation & Cleaning
-
-Data validation was performed to check whether the dataset was suitable for further analysis.
-
-The following validation checks were performed:
-
-- Checking missing values
-- Checking duplicate Product IDs
-- Checking invalid prices
-- Checking unknown or missing strengths
-- Checking important ingredient information
-- Checking dosage-form consistency
-- Checking the structure of comparison groups
 
 ## Final Comparison-Ready Dataset
 
@@ -696,124 +599,173 @@ Otherwise, it is classified as:
 
 **Potential Branded**
 
+## Classification Principle -- primary ingredient
+#  Potential Generic-Name Identification
+
+The dataset does not contain an official generic/branded classification field.
+
+Therefore, the project uses a **project-defined analytical method** to identify **Potential Generic** medicine candidates.
+
+## Identification Method
+
+The medicine name is cleaned by:
+
+- Converting the name to lowercase
+- Removing strength values and units
+- Removing common dosage-form words
+- Removing unnecessary spaces
+
+The cleaned medicine name is then compared with the cleaned `primary_ingredient`.
+
+If the cleaned medicine name matches the primary ingredient, the product is classified as:
+
+**Potential Generic**
+
+Otherwise, it is classified as:
+
+**Potential Branded**
+
 ## Classification Principle
 
 The classification is based on the relationship between:
 
-```text
-Medicine Name ↔ Primary Ingredient
-23. Statistical Analysis
+**Medicine Name ↔ Primary Ingredient**
+
+It is **not** based solely on:
+
+- Manufacturer
+- Price
+
+> **Important:** The terms **Potential Generic** and **Potential Branded** are project-defined analytical categories. They should not be interpreted as official regulatory classifications of medicines.
+
+The categories are used only for the purpose of this project's data analysis and price comparison.
+
+---
+
+#  Statistical Analysis
 
 Statistical analysis was performed to understand price differences among comparable medicines.
 
+## Metrics Considered
+
 The analysis considered:
 
-Number of Potential Generic candidates
-Number of Potential Branded products
-Number of comparison groups
-Minimum price
-Maximum price
-Average price
-Price difference
-Percentage price difference
+- Number of Potential Generic candidates
+- Number of Potential Branded products
+- Number of comparison groups
+- Minimum price
+- Maximum price
+- Average price
+- Price difference
+- Percentage price difference
+
+## Analysis Performed
 
 The analysis also identified:
 
-Potential Generic candidates priced below the comparison average
-Potential Generic candidates priced above the comparison average
-Cases where prices were approximately equal
+- Potential Generic candidates priced below the comparison average
+- Potential Generic candidates priced above the comparison average
+- Cases where prices were approximately equal
 
 This analysis helps identify the extent of price variation among products with comparable characteristics.
 
- Price Comparison Method
+---
+
+#  Price Comparison Method
 
 The price comparison was performed after identifying Potential Generic candidates and their corresponding comparison groups.
 
-For each Potential Generic candidate:
+## Comparison Process
 
-Its comparison_group was identified.
-Other products belonging to the same comparison group were identified.
-The candidate itself was excluded from the comparison set.
-The average listed price of the other products was calculated.
-The candidate's listed price was compared with this average.
-Comparison Criteria
+For each **Potential Generic** candidate:
+
+1. Its `comparison_group` was identified.
+2. Other products belonging to the same comparison group were identified.
+3. The candidate itself was excluded from the comparison set.
+4. The average listed price of the other products was calculated.
+5. The candidate's listed price was compared with this average.
+
+## Comparison Criteria
 
 The products being compared have the same:
 
-Primary ingredient
-Primary strength
-Dosage form
+- **Primary ingredient**
+- **Primary strength**
+- **Dosage form**
 
-The project uses the average listed price of other products in the same comparison group as the reference price.
+The project uses the **average listed price of other products in the same comparison group** as the reference price.
 
- Price Difference
+---
 
-The price difference is calculated using:
+#  Price Difference
 
-Price Difference = Average Price of Other Products − Potential Generic Price
-Interpretation
+The price difference is calculated using the following formula:
 
-If:
+## Formula
 
-Price Difference > 0
+**Price Difference = Average Price of Other Products − Potential Generic Price**
 
-the Potential Generic candidate has a lower listed price than the average price of the other products in the same comparison group.
+## Interpretation
 
-If:
+### If Price Difference > 0
 
-Price Difference < 0
+The Potential Generic candidate has a **lower listed price** than the average price of the other products in the same comparison group.
 
-the Potential Generic candidate has a higher listed price than the comparison average.
+### If Price Difference < 0
 
-If the difference is approximately zero, the prices are approximately equal.
+The Potential Generic candidate has a **higher listed price** than the comparison average.
+
+### If Price Difference ≈ 0
+
+The prices are approximately equal.
 
 Therefore, the project does not automatically treat every price difference as a saving.
 
- Percentage Price Difference
+---
+
+#  Percentage Price Difference
 
 The percentage price difference is calculated using the average price of other products as the reference.
 
-Formula
-Percentage Price Difference
-=
-((Average Other Price − Candidate Price) / Average Other Price) × 100
-Example
+## Formula
+
+**Percentage Price Difference**
+
+**= ((Average Other Price − Candidate Price) / Average Other Price) × 100**
+
+## Example
 
 Suppose:
 
-Average price of other products = ₹100
-Potential Generic price = ₹70
+- **Average price of other products = ₹100**
+- **Potential Generic price = ₹70**
 
-Then:
+### Step 1: Calculate Price Difference
 
-Price Difference = ₹100 − ₹70
-                 = ₹30
-Percentage Price Difference
-= (₹30 / ₹100) × 100
-= 30%
+**Price Difference = ₹100 − ₹70**
 
-Therefore, the Potential Generic candidate's listed price is 30% lower than the comparison average.
+**= ₹30**
 
-Interpretation
-Percentage	Interpretation
-Positive %	Potential Generic candidate is priced below the comparison average
-Negative %	Potential Generic candidate is priced above the comparison average
-Approximately 0%	Prices are approximately equal
+### Step 2: Calculate Percentage Price Difference
 
-A negative percentage should therefore be interpreted as the candidate being higher priced than the comparison average, rather than as a negative saving.
+**Percentage Price Difference = (₹30 / ₹100) × 100**
 
- Project Visualizations
+**= 30%**
 
-The visual outputs generated during the project are maintained separately in the Images folder.
+Therefore, the Potential Generic candidate's listed price is **30% lower than the comparison average**.
 
-Potential Generic vs Potential Branded
+## Interpretation
 
-Potential Generic Price vs Average Comparison Price
+| Percentage | Interpretation |
+|---|---|
+| **Positive %** | Potential Generic candidate is priced below the comparison average |
+| **Negative %** | Potential Generic candidate is priced above the comparison average |
+| **Approximately 0%** | Prices are approximately equal |
 
-Medicine Price Distribution
+A negative percentage should therefore be interpreted as the candidate being **higher priced than the comparison average**, rather than as a negative saving.
 
-Price Distribution Comparison
+---
 
-Percentage Price Difference
 
-Comparison Group Analysis
+
+The classification is based on the relationship between:
