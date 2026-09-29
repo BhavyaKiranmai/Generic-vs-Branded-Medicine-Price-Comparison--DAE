@@ -148,6 +148,7 @@ https://www.kaggle.com/datasets/rishgeeky/indian-pharmaceutical-products
 ## Dataset Format
 
 The dataset is provided in CSV format.
+The dataset contains information about pharmaceutical products including medicine names, manufacturers, prices, dosage forms, primary ingredients, strengths, active ingredients, therapeutic classes, and packaging information.
 
 ## Initial Dataset Size
 
@@ -174,3 +175,26 @@ active_ingredients
 therapeutic_class
 packaging_raw
 manufacturer_raw
+
+8. Data Loading & Inspection
+
+The pharmaceutical dataset was loaded into Python using the Pandas library.
+
+The dataset was read using pd.read_csv() and inspected before performing any processing.
+
+The initial dataset used in the Review-2 pipeline contained:
+
+253,973 records
+15 columns
+
+The following inspection operations were performed:
+
+Checking the dataset shape
+Viewing the first few records
+Checking column names
+Checking data types
+Checking missing values
+Examining unique values
+Understanding the structure of the dataset
+
+The inspection helped identify the important attributes required for further processing and analysis.
